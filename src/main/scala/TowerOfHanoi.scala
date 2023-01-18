@@ -1,3 +1,4 @@
+import scala.::
 
 /**
  * The three pegs of the game. The game starts with all N disks on peg 1 and
@@ -18,7 +19,7 @@ case class Move(from: Peg, to: Peg):
 
 /**
  * Starting with `n` disks of distinct diameters on peg 1, arranged in order of their size,
- * with the smallest disc at the top, and the largest disk at the bottoom, compute the sequence
+ * with the smallest disc at the top, and the largest disk at the bottom, compute the sequence
  * of legal moves which, when executed one disk at a time, move all disks to peg 3.
  * A legal move is one where we take a disk from the top of a pile,
  * and we move it on top of a different (destination) pile,
@@ -28,12 +29,20 @@ case class Move(from: Peg, to: Peg):
  *         to the destination peg.
  */
 def towerOfHanoiRecursive(n: Int): Iterator[Move] = {
-  def helper(n: Int, from: Peg, to: Peg, aux: Peg): Iterator[Move] = ???
+  def helper(n: Int, from: Peg, to: Peg, aux: Peg): Iterator[Move] = {
+    if (n == 0) {
+      return Iterator.empty[Move]
+    }
+    if (n == 1) {
+      return Iterator(Move(from, to))
+    }
+    helper(n-1, from, aux, to).++(Iterator(Move(from, to)).++(helper(n-1, aux, to, from)))
+  }
   helper(n, 1, 3, 2)
 }
 
 /**
- * Descriptor for a subproblem that we choose to solve later
+ * Descriptor for a sub-problem that we choose to solve later
  * @param n    number of disks to move
  * @param from source peg
  * @param to   destination peg
@@ -50,10 +59,11 @@ case class Problem(n: Int, from: Peg, to: Peg, aux: Peg)
 def towerOfHanoiIterative(n: Int): Iterator[Move] =
   def helper(n: Int, from: Peg, to: Peg, aux: Peg): Iterator[Move] =
     Iterator.iterate((List(Problem(n, from, to, aux)), Iterator.empty[Move])) {
-      case (Problem(0, _, _, _) :: _, _) => ???
-      case (Problem(1, x, y, _) :: stackTail, _) => ???
-      case (Problem(k, f, t, a)::stackTail, _) => ???
-      case (Nil, _) => ???
+      case (Problem(0, _, _, _) :: _, _) => (List.empty[Problem], Iterator.empty[Move])
+      case (Problem(1, x, y, _) :: stackTail, _) => (stackTail, Iterator(Move(x, y)))
+      case (Problem(k, f, t, a) :: stackTail, _) =>
+        (Problem(k-1, f, a, t) :: Problem(1, f, t,a):: Problem(k-1, a, t, f) :: stackTail, Iterator.empty[Move])
+      case (Nil, _) => (List.empty[Problem], Iterator.empty[Move])
     }.takeWhile { case (p,o) => p.nonEmpty || o.nonEmpty }.flatMap(_._2)
   helper(n, 1, 3, 2)
 
