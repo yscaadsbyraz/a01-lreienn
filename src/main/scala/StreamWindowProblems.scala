@@ -7,14 +7,27 @@ import collection.immutable.Queue
  * @param k The averaging size
  * @return  The averaged list
  */
-def movingAverage(l: List[Double], k: Int): List[Double] = l.scanLeft(MovingAverageState()) {
-  case (MovingAverageState(sum, queue, size), element) if ??? => ???
-  case (MovingAverageState(sum, queue, size), element) => ???
-}.filter(_.samplesSize == k).map(_.sumOfSamples / k)
+def movingAverage(l: List[Double], k: Int): List[Double] = {
+  if (k <= 0 || l.length <= 0 || k > l.length) List.empty[Double]
+  else {
+    val ans = l.scanLeft(MovingAverageState()) {
+      {
+        case (MovingAverageState(sum, queue, size), element)
+          if size < k =>
+          MovingAverageState(sum + element, queue.enqueue(element), size + 1)
+        case (MovingAverageState(sum, queue, size), element) =>
+          val (front, newQueue) = queue.dequeue
+          MovingAverageState(sum - front + element, newQueue.enqueue(element), size)
+      }
+    }.filter(_.samplesSize == k).map(_.sumOfSamples / k)
+    ans
+  }
+}
+
 
 /**
  * Case class to represent the state of the Moving Average computation. Remember, we want an efficient solution, i.e one
- * that runs in O(n), so we need to maintain certain feelds that may appear
+ * that runs in O(n), so we need to maintain certain fields that may appear
  * @param sumOfSamples      The sum of all the samples in the queue
  * @param samplesToAverage  A queue holding all the samples to be averaged
  * @param samplesSize       The number of elements currently in the queue (good to keep track of, since computing the length of the queue takes O(n)
@@ -32,9 +45,15 @@ case class MovingAverageState(
  * @return for each day, the maximum gain that could have been obtained up to that point by buying low and selling high.
  */
 def maximumGains(l: List[Double]): List[Double] = l.scanLeft(MaximumGainsState()) {
-  case (MaximumGainsState(gains, min, max), sample) if ??? => ???
-  case (MaximumGainsState(gains, min, max), sample) if ??? => ???
-    // feel free to add more 'case' clauses
+      println(s"l: $l")
+  {
+    case (MaximumGainsState(gains, min, _), sample) if min > sample => MaximumGainsState(gains, sample)
+    case (MaximumGainsState(gains, min, max), sample) if max < sample & (sample-min) > gains =>
+      MaximumGainsState(sample - min, min, sample)
+    case (MaximumGainsState(gains, min, max), sample) if max < sample =>
+      MaximumGainsState(gains, min, sample)
+    case (MaximumGainsState(gains, min, max), _) => MaximumGainsState(gains, min, max)
+  }
 }.map(_.maxGainsSoFar)
 
 /**
