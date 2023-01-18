@@ -29,31 +29,31 @@ class TowerOfHanoiTest extends AnyFunSuite {
   }
 
   test("towerOfHanoiRecursive is correct for n = 5") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(5, 1, 3, 2)
+    towerOfHanoiRecursive(5).to(List) shouldBe toh(5, 1, 3, 2)
   }
 
   test("towerOfHanoiRecursive is correct for n = 6") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(6, 1, 3, 2)
+    towerOfHanoiRecursive(6).to(List) shouldBe toh(6, 1, 3, 2)
   }
 
   test("towerOfHanoiRecursive is correct for n = 7") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(7, 1, 3, 2)
+    towerOfHanoiRecursive(7).to(List) shouldBe toh(7, 1, 3, 2)
   }
 
   test("towerOfHanoiRecursive is correct for n = 8") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(8, 1, 3, 2)
+    towerOfHanoiRecursive(8).to(List) shouldBe toh(8, 1, 3, 2)
   }
 
   test("towerOfHanoiRecursive is correct for n = 9") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(9, 1, 3, 2)
+    towerOfHanoiRecursive(9).to(List) shouldBe toh(9, 1, 3, 2)
   }
 
   test("towerOfHanoiRecursive is correct for n = 10") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(10, 1, 3, 2)
+    towerOfHanoiRecursive(10).to(List) shouldBe toh(10, 1, 3, 2)
   }
 
-  test("towerOfHanoiRecursive is correct for n = 100") {
-    towerOfHanoiRecursive(4).to(List) shouldBe toh(100, 1, 3, 2)
+  test("towerOfHanoiRecursive is correct for n = 20") {
+    towerOfHanoiRecursive(20).to(List) shouldBe toh(20, 1, 3, 2)
   }
 
   test("towerOfHanoiIterative is correct for n = 0") {
@@ -76,7 +76,7 @@ class TowerOfHanoiTest extends AnyFunSuite {
     towerOfHanoiIterative(4).to(List) shouldBe toh(4, 1, 3, 2)
   }
 
-  test("towerOfHanoiIterative is correct for n = 100") {
-    towerOfHanoiIterative(4).to(List) shouldBe toh(100, 1, 3, 2)
+  test("towerOfHanoiIterative is correct for n = 20") {
+    towerOfHanoiIterative(20).to(List) shouldBe toh(20, 1, 3, 2)
   }
 }

@@ -45,7 +45,6 @@ case class MovingAverageState(
  * @return for each day, the maximum gain that could have been obtained up to that point by buying low and selling high.
  */
 def maximumGains(l: List[Double]): List[Double] = l.scanLeft(MaximumGainsState()) {
-      println(s"l: $l")
   {
     case (MaximumGainsState(gains, min, _), sample) if min > sample => MaximumGainsState(gains, sample)
     case (MaximumGainsState(gains, min, max), sample) if max < sample & (sample-min) > gains =>
